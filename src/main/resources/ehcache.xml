@@ -1,0 +1,53 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
+    <diskStore path="java.io.tmpdir"/>
+	<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"
+		properties="connect=TCP(start_port=7800;bind_addr=127.0.0.1):
+		TCPPING(initial_hosts=127.0.0.1[7800];port_range=3;timeout=5000;num_initial_members=6):
+		VERIFY_SUSPECT(timeout=1500):
+		pbcast.NAKACK(gc_lag=100;retransmit_timeout=3000):
+		pbcast.STABLE(desired_avg_gossip=20000):
+		FD(timeout=5000;shun=true):
+		pbcast.GMS(join_timeout=5000;shun=true;print_local_addr=false)"
+		propertySeparator="::" />
+	<defaultCache maxElementsInMemory="10000" memoryStoreEvictionPolicy="LRU" eternal="true" diskPersistent="false"
+		overflowToDisk="true" maxElementsOnDisk="10000000" />
+	<cache name="finCache" maxElementsInMemory="10000"
+		memoryStoreEvictionPolicy="LRU" eternal="true" diskPersistent="false" diskExpiryThreadIntervalSeconds="120" timeToIdleSeconds="0" timeToLiveSeconds="0" overflowToDisk="true" maxElementsOnDisk="10000000">
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"
+			properties="replicateAsynchronously=true,replicatePuts=true,replicateUpdates=true,replicateUpdatesViaCopy=true,replicateRemovals=true" />
+	</cache>
+	<cache name="tradeCache" maxElementsInMemory="10000"
+		memoryStoreEvictionPolicy="LRU" eternal="true" diskPersistent="false" diskExpiryThreadIntervalSeconds="120" timeToIdleSeconds="0" timeToLiveSeconds="0" overflowToDisk="true" maxElementsOnDisk="10000000">
+		<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"
+			properties="replicateAsynchronously=true,replicatePuts=true,replicateUpdates=true,replicateUpdatesViaCopy=true,replicateRemovals=true" />
+	</cache>
+    
+    <!--<cacheManagerPeerProviderFactory
+    	class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+    	properties="peerDiscovery=manual,rmiUrls=//192.168.10.27:40000/finCache" />
+   
+    <cacheManagerPeerListenerFactory
+    	class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+    	properties="hostName=127.0.0.1,port=40000,socketTimeoutMillis=12000" />
+
+    <defaultCache maxElementsInMemory="10000" eternal="false"  
+        timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"  
+        diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"  
+        diskPersistent="false" diskExpiryThreadIntervalSeconds="120"  
+        memoryStoreEvictionPolicy="LRU">  
+        <cacheEventListenerFactory  
+            class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />  
+    </defaultCache> 
+    
+    <cache name="finCache" maxElementsInMemory="10000" eternal="true"
+    	overflowToDisk="false" timeToIdleSeconds="0" timeToLiveSeconds="0"
+    	diskPersistent="false" >
+    	<cacheEventListenerFactory  
+            class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" /> 
+    </cache>
+    
+    <cache name="tradeCache" maxElementsInMemory="10000" eternal="true"
+    	overflowToDisk="false" timeToIdleSeconds="0" timeToLiveSeconds="0"
+    	diskPersistent="false" >
+    </cache>-->
+</ehcache>
