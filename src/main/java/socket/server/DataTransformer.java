@@ -16,11 +16,13 @@ public abstract class DataTransformer {
 	public abstract String write(String username, String s);
 	
 	// 读取NIOSOCKET方式，此方法必须实现
+	@Deprecated
 	public String getHandleResult() {
 		return handleResult;
 	}
 	
 	// 读取NIOSOCKET方式，此方法必须实现
+	@Deprecated
 	public void setHandleResult(String handleResult) {
 		this.handleResult = handleResult;
 	}

@@ -17,7 +17,7 @@ public class BioChatRoomClient {
 	private Socket conn = null;
 	private BufferedReader input = null;
 	private InetSocketAddress address = null;	
-	private int timeOut = 20000;	
+	private int timeOut = 2000000;	
 	private int readTimeOut = 20000;	
 	private boolean needResponse = true;	
 	private int bufferSize = 20 * 1024;	
@@ -202,7 +202,7 @@ public class BioChatRoomClient {
 	public static void main(String[] s) {
 		Scanner input;
 		try {
-			BioChatRoomClient sc = new BioChatRoomClient("99.6.148.95", 9001);
+			BioChatRoomClient sc = new BioChatRoomClient("127.0.0.1", 9002);
 			System.out.print("请输入用户名：");
 			while(true) {
 				input = new Scanner(System.in);

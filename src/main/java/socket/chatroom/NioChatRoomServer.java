@@ -26,7 +26,7 @@ public class NioChatRoomServer implements Runnable {
 	private ByteBuffer receivebuffer = ByteBuffer.allocate(BLOCK);
 	private Selector selector;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	private Class<DataTransformer> dataTransformerClazz;
+	private DataTransformer dataTransformer;
 
 	@SuppressWarnings("unchecked")
 	public NioChatRoomServer(int port, String dataTransformerClazz) throws Exception {
@@ -44,7 +44,7 @@ public class NioChatRoomServer implements Runnable {
 			// 注册到selector，等待连接
 			serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 			
-			this.dataTransformerClazz = (Class<DataTransformer>) Class.forName(dataTransformerClazz);
+			this.dataTransformer = ((Class<DataTransformer>) Class.forName(dataTransformerClazz)).newInstance();
 			logger.info("聊天室（二）启动，端口：" + port);
 		} catch (ClassNotFoundException e) {
 			throw e;
@@ -89,44 +89,50 @@ public class NioChatRoomServer implements Runnable {
 						receivebuffer.clear();
 						// 读取服务器发送来的数据到缓冲区中
 						count = client.read(receivebuffer);
+						NioChatRoomObject chatRoomObject = (NioChatRoomObject) selectionKey
+								.attachment();
+						if (chatRoomObject == null) {
+							chatRoomObject = new NioChatRoomObject();
+						}
+						String username = chatRoomObject.getUsername();
 						if (count > 0) {
-//							logger.info("[][reading request from client][]");
-							DataTransformer dataTransformer = dataTransformerClazz.newInstance();
-							String handleResult = dataTransformer
-									.read(receivebuffer.array());
-							if (handleResult == null) {
-								// TODO
-//								logger.info(this.username + "退出了聊天室");
+							receivebuffer.flip();
+							byte[] btSize = new byte[receivebuffer.limit()];
+							receivebuffer.get(btSize);
+							String readResult = new String(btSize, "GBK").trim();
+							if (readResult == null) {
+								logger.info(username + "退出了聊天室");
 								return;
+							} else if (readResult!=null && readResult.contains("#login#")) {
+								username = readResult.substring(0, readResult.length() - 8);
+								chatRoomObject.setUsername(username);
 							}
-							dataTransformer.setHandleResult(handleResult.trim());
-							client.register(selector, SelectionKey.OP_WRITE,
-									dataTransformer);
+							chatRoomObject.setChat(readResult.trim());
+							client.register(selector, SelectionKey.OP_WRITE, chatRoomObject);
 						} else if (count == -1) {
+							logger.info(username + "退出了聊天室");
 							if (client != null) {
 								client.close();
 							}
 						}
 					} else if (selectionKey.isWritable()) {
-						logger.info("[][writing response to client][]");
 						// 将缓冲区清空以备下次写入
 						sendbuffer.clear();
 						// 返回为之创建此键的通道。
 						client = (SocketChannel) selectionKey.channel();
-						DataTransformer dataTransformer = (DataTransformer) selectionKey
+						NioChatRoomObject chatRoomObject = (NioChatRoomObject) selectionKey
 								.attachment();
 						// 向缓冲区中输入数据
-						sendbuffer.put(dataTransformer.write(null,
-								dataTransformer.getHandleResult()).getBytes());
+						sendbuffer.put(dataTransformer.write(chatRoomObject.getUsername(), chatRoomObject.getChat()).getBytes("GBK"));
 						// 将缓冲区各标志复位,因为向里面put了数据标志被改变要想从中读取数据发向服务器,就要复位
 						sendbuffer.flip();
 						// 输出到通道
 						client.write(sendbuffer);
-						client.register(selector, SelectionKey.OP_READ);
+						client.register(selector, SelectionKey.OP_READ, chatRoomObject);
 					}
 				}
 			} catch (Exception e) {
-				logger.error("[EBUS_002][请求处理失败][" + e.getMessage() + "]", e);
+				logger.error(e.getMessage(), e);
 				try {
 					if (selectionKey != null) {
 						selectionKey.cancel();

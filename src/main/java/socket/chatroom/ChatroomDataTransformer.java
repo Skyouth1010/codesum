@@ -24,8 +24,7 @@ public class ChatroomDataTransformer extends DataTransformer {
 
 	@Override
 	public String read(byte[] input) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return new String(input, "GBK").trim();
 	}
 
 	@Override
