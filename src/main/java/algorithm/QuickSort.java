@@ -21,7 +21,7 @@ public class QuickSort {
 	    return;
 	}
 
-	// Choose a partition element, v
+	// Choose a partition element, v, randomized-version partition for quick-sort
 	int m = off + (len >> 1);       // Small arrays, middle element
 	if (len > 7) {
 	    int l = off;

@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Arrays {
 	
-	static final int NUM = (1 << 16) + 1;
+	static final int NUM = (1 << 17) + 1;
 	
 	private Arrays() {}
 	

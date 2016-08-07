@@ -17,9 +17,13 @@ public class CompareSortStrategy {
 		Element<String>[] isarrays = new Element[elements.length];
 		System.arraycopy(elements, 0, isarrays, 0, elements.length);
 		
+		Element<String>[] qsarrays = new Element[elements.length];
+		System.arraycopy(elements, 0, qsarrays, 0, elements.length);
+		
 		SortStrategy<String> ms = new MergeSort();
 		SortStrategy<String> hs = new HeapSort();
 		SortStrategy<String> is = new InsertSort();
+		SortStrategy<String> qs = new QuickSort();
 		
 		long now = System.currentTimeMillis();
 		is.sort(isarrays);
@@ -32,6 +36,10 @@ public class CompareSortStrategy {
 		
 		hs.sort(isarrays);
 		System.out.println(System.currentTimeMillis() - now);// 堆排序耗时
+		now = System.currentTimeMillis();
+		
+		qs.sort(qsarrays);
+		System.out.println(System.currentTimeMillis() - now);// 快速排序耗时
 	}
 
 }
