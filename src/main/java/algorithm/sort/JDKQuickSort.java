@@ -1,6 +1,14 @@
-package algorithm;
+package algorithm.sort;
 
-public class QuickSort {
+/**
+ * JDK中的快排分析
+ * 
+ * @author skyouth
+ *
+ * 2016年9月5日
+ *
+ */
+public class JDKQuickSort {
 
 	public static void main(String[] args) {
 

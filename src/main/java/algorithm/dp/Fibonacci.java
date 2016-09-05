@@ -1,4 +1,4 @@
-package algorithm;
+package algorithm.dp;
 
 public class Fibonacci {
 

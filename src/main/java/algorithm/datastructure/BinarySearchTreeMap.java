@@ -1,4 +1,4 @@
-package algorithm;
+package algorithm.datastructure;
 
 import java.util.AbstractMap;
 import java.util.Comparator;
@@ -8,6 +8,15 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedMap;
 
+/**
+ * 二叉搜索树实现的Map，由于树不平衡，最坏情况下性能较差
+ * @author skyouth
+ *
+ * 2016年9月5日
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class BinarySearchTreeMap<K, V> 
 	extends AbstractMap<K,V>
 	implements NavigableMap<K,V>, Cloneable, java.io.Serializable{
@@ -219,6 +228,11 @@ public class BinarySearchTreeMap<K, V>
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public V put(K key, V value) {
+        throw new UnsupportedOperationException();
+    }
 
 
 	@Override
