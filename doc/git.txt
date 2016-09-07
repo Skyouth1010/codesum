@@ -1,0 +1,22 @@
+git config --global user.name Skyouth1010
+git config --global user.email skyouth1010@163.com
+mkdir HelloWorld --HelloWorld 为github上的仓库
+cd HelloWorld
+git init
+touch README --创建文件
+git add README,将文件添加到上传队列
+git commit -m 'test commit'，缓存提交，引号中的是对本次提交的描述，必须填写，不能为空，在commit前一定要先add
+git remote add origin https://github.com/Skyouth1010/HelloWorld.git,注意url格式，d1php是你注册时的昵称，test是你刚才建立的版本仓库
+git push origin master上传，如果服务器端有变更，会无法上传，得先pull
+git pull https://github.com/Skyouth1010/HelloWorld.git ，pull会拉取服务器端的变更，但是不会覆盖本地变更文件，那么问题来了，冲突怎么解决？
+
+
+
+拉取别人的分支版本库
+进入对应的版本库分支，点击fork，这个版本库就会进入到我的版本库中，在用git pull就能获取到本地了
+输入git remote add upstream https://github.com/octocat/Spoon-Knife.git，这里我们使用的是原项目的地址，确保我们可以随时跟踪到原项目
+输入git fetch upstream，获取原项目最新的与你本地版本库不同的修改，但是不修改你的本地文件
+
+git的回退：
+直接使用 git reset （要回退到的节点哈希值），这个操作只是将提交退掉 修改还在 是未提交状态
+使用 git reset （要回退到的节点哈希值） --hard，这样可以完全回退 修改也就被退掉了
