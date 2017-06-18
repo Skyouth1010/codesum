@@ -50,7 +50,7 @@ public class TcpNettyServer implements Runnable {
 	
 	@Override
 	public void run() {
-        // Configure the server.
+        // Configure the server.,reactor线程池
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
         try {

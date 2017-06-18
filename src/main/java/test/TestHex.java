@@ -1,8 +1,16 @@
+
 package test;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import security.base64.CinBase64;
 
@@ -13,6 +21,26 @@ public class TestHex {
 	public static void main(String[] args) {
 
 		try {
+			Calendar newa = Calendar.getInstance();
+//			newa.setTimeInMillis(1491551206547L);
+			newa.set(2017, 4, 8);
+			newa.set(Calendar.HOUR_OF_DAY, 8);
+			System.out.println(newa.getTimeInMillis());
+			System.out.println((-1<<29 | 0) & ((1 << 29) - 1));
+			ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 5, 1000, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+			executor.execute(new Runnable() {
+				
+				@Override
+				public void run() {
+					System.out.println("aaaaa");
+				}
+			});
+			int res = 12 / 2 / 3;
+            System.out.println(Runtime.getRuntime().maxMemory());
+			
+			
+			System.out.println(System.nanoTime());
+			System.out.println(System.currentTimeMillis());
 			int x = 2,y = 2;
 			x = (y = 1);
 			System.out.println(Runtime.getRuntime().availableProcessors());
